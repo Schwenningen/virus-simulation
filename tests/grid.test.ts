@@ -1,7 +1,7 @@
 import { Grid } from '../src/core/grid';
 import { Cell } from '../src/core/cell';
 import { Agent } from '../src/core/agent';
-
+import { Virus } from '../src/core/virus';
 describe('Grid', () => {
     it('should create a grid with the correct dimensions and cells', () => {
         const width = 3;
@@ -24,7 +24,7 @@ describe('Grid', () => {
     it('should return all available cells around a given cell', () => {
         const grid = new Grid(3, 3);
         const cell = grid.getCell(1, 1);
-        cell.setAgent(new Agent(1, 1, 1, 1, 1, 1, 1, 1, 1, grid, cell));
+        cell.setAgent(Agent.create(1, 1, grid, cell));
 
         const availableCells = grid.getAvailableCells(1, 1);
 
@@ -48,7 +48,7 @@ describe('Grid', () => {
         for (let y = 0; y < 3; y++) {
             for (let x = 0; x < 3; x++) {
                 if (x !== 1 || y !== 1) {
-                    grid.getCell(x, y).setAgent(new Agent(1, 1, 1, 1, 1, 1, 1, 1, 1, grid, grid.getCell(x, y)));
+                    grid.getCell(x, y).setAgent(Agent.create(x, y, grid, grid.getCell(x, y)));
                 }
             }
         }
@@ -60,8 +60,8 @@ describe('Grid', () => {
 
     it('should return available cells when one surrounding cell is occupied', () => {
         const grid = new Grid(3, 3);
-        grid.getCell(1, 1).setAgent(new Agent(1, 1, 1, 1, 1, 1, 1, 1, 1, grid, grid.getCell(1, 1)));
-        grid.getCell(0, 1).setAgent(new Agent(1, 1, 1, 1, 1, 1, 1, 1, 1, grid, grid.getCell(0, 1))); 
+        grid.getCell(1, 1).setAgent(Agent.create(1, 1, grid, grid.getCell(1, 1)));
+        grid.getCell(0, 1).setAgent(Agent.create(0, 1, grid, grid.getCell(0, 1))); 
 
         const availableCells = grid.getAvailableCells(1, 1);
 
@@ -81,7 +81,7 @@ describe('Grid', () => {
 
     it('should return available cells when the agent is on the edge of the grid', () => {
         const grid = new Grid(3, 3);
-        grid.getCell(0, 0).setAgent(new Agent(1, 1, 1, 1, 1, 1, 1, 1, 1, grid, grid.getCell(0, 0)));
+        grid.getCell(0, 0).setAgent(Agent.create(0, 0, grid, grid.getCell(0, 0)));
 
         const availableCells = grid.getAvailableCells(0, 0);
 
@@ -97,8 +97,8 @@ describe('Grid', () => {
 
     it('should return all surrounding agents around a given cell', () => {
         const grid = new Grid(3, 3);
-        const agent1 = new Agent(1, 1, 1, 1, 1, 1, 1, 1, 1, grid, grid.getCell(0, 0));
-        const agent2 = new Agent(1, 1, 1, 1, 1, 1, 1, 1, 1, grid, grid.getCell(0, 1));
+        const agent1 = Agent.create(0, 0, grid, grid.getCell(0, 0));
+        const agent2 = Agent.create(0, 1, grid, grid.getCell(0, 1));
         grid.getCell(0, 0).setAgent(agent1);
         grid.getCell(0, 1).setAgent(agent2);
 
@@ -118,7 +118,7 @@ describe('Grid', () => {
 
     it('should return agents when one surrounding cell is occupied', () => {
         const grid = new Grid(3, 3);
-        const agent = new Agent(1, 1, 1, 1, 1, 1, 1, 1, 1, grid, grid.getCell(0, 1));
+        const agent = Agent.create(0, 1, grid, grid.getCell(0, 1));
         grid.getCell(0, 1).setAgent(agent);
 
         const surroundingAgents = grid.getSurroundingAgents(1, 1);
@@ -129,7 +129,7 @@ describe('Grid', () => {
 
     it('should return agents when the agent is on the edge of the grid', () => {
         const grid = new Grid(3, 3);
-        const agent = new Agent(1, 1, 1, 1, 1, 1, 1, 1, 1, grid, grid.getCell(0, 1));
+        const agent = Agent.create(0, 1, grid, grid.getCell(0, 1));
         grid.getCell(0, 1).setAgent(agent);
 
         const surroundingAgents = grid.getSurroundingAgents(0, 0);
