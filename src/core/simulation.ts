@@ -1,6 +1,7 @@
 import { Agent } from "./agent";
 import { Virus } from "./virus";
 import { Canvas } from "../ui/canvas";
+import { AnimationState } from "./animationState";
 
 export class Simulation {
     agents: Agent[];
@@ -9,24 +10,44 @@ export class Simulation {
     ctx: CanvasRenderingContext2D;
     running: boolean = false;
     lastUpdateTime: number = 0;
+    lastUpdateFrameTime: number = 0;
     updateInterval: number = 500;
+    fps: number = 30;
+    agentStates: Map<Agent, AnimationState>;
     static icon_susceptible: string = "😁";
     static icon_infected: string = "🤢";
     static icon_recovered: string = "😎";
     static icon_dead: string = "💀";
     static icon_incubating: string = "😷";
 
-    constructor(agents: Agent[], virus: Virus, canvas: Canvas, updateInterval: number = 1000) {
+    constructor(agents: Agent[], virus: Virus, canvas: Canvas, updateInterval: number = 1000, fps: number = 30) {
         this.agents = agents;
         this.virus = virus;
         this.canvas = canvas;
         this.updateInterval = updateInterval;
         this.ctx = this.canvas.getCanvas().getContext("2d")!;
+        this.fps = fps;
+
+        this.agentStates = new Map();
+        this.agents.forEach(agent => {
+            const { x, y } = agent.getPosition();
+            this.agentStates.set(agent, { prevX: x, prevY: y, targetX: x, targetY: y, lerpProgress: 1, moveStep: 1 / fps });
+        });
     }
 
     public update() {
         this.agents.forEach(agent => {
+            const state = this.agentStates.get(agent);
+            if (!state) return;
+            state.prevX = state.targetX;
+            state.prevY = state.targetY;
+
             agent.updateState();
+
+            const { x, y } = agent.getPosition();
+            state.targetX = x;
+            state.targetY = y;
+            state.lerpProgress = 0;
         });
     }
 
@@ -37,7 +58,12 @@ export class Simulation {
         const padding = this.canvas.getPadding();
 
         this.agents.forEach(agent => {
-            const { x, y } = agent.getPosition();
+            const state = this.agentStates.get(agent);
+            if (!state) return;
+            state.lerpProgress = Math.min(state.lerpProgress + 0.1, 1);
+
+            const x = state.prevX + (state.targetX - state.prevX) * state.lerpProgress;
+            const y = state.prevY + (state.targetY - state.prevY) * state.lerpProgress;
             this.ctx.font = `${size / 1.2}px Arial`;
             this.ctx.textAlign = "center";
             this.ctx.textBaseline = "middle";
@@ -58,6 +84,9 @@ export class Simulation {
         if (timestamp - this.lastUpdateTime >= this.updateInterval) {
             this.lastUpdateTime = timestamp;
             this.update();
+        }
+        if (timestamp - this.lastUpdateFrameTime >= (this.updateInterval / this.fps)) {
+            this.lastUpdateFrameTime = timestamp;
             this.draw();
         }
         if (!this.agents.some(agent => agent.getState() === 'Infected' || agent.getState() === 'Incubating')) {

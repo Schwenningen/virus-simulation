@@ -63,10 +63,10 @@ const canvas = initCanvas();
 const grid = new Grid(40, 20);
 const virus = new Virus(1, 0.1, 30, 30);
 
-const agents: Agent[] = generateAgents(80, 'Susceptible', 0, 0, false, grid, virus);
+const agents: Agent[] = generateAgents(40, 'Susceptible', 0, 0, false, grid, virus);
 agents.push(...generateAgents(2, 'Infected', 0, 0, false, grid, virus));
 
-let simulation = new Simulation(agents, virus, canvas);
+let simulation = new Simulation(agents, virus, canvas, 500);
 let simulationRunning = false;
 
 export function toggleSimulation() {
