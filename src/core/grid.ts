@@ -1,4 +1,5 @@
 import { Cell } from "./cell";
+import { Agent } from "./agent";
 
 export class Grid {
     private readonly width: number;
@@ -52,5 +53,35 @@ export class Grid {
         }
         
         return availableCells;
+    }
+
+    public getSurroundingAgents(x: number, y: number): Agent[] {
+        const directions = [
+            { dx: -1, dy: 0 },
+            { dx: 1, dy: 0 },
+            { dx: 0, dy: -1 },
+            { dx: 0, dy: 1 },
+            { dx: -1, dy: -1 },
+            { dx: 1, dy: -1 },
+            { dx: -1, dy: 1 },
+            { dx: 1, dy: 1 }
+        ];
+        const surroundingAgents: Agent[] = [];
+
+        for (const { dx, dy } of directions) {
+            const newX = x + dx;
+            const newY = y + dy;
+            if (newX >= 0 && newX < this.width && newY >= 0 && newY < this.height) {
+                const cell = this.getCell(newX, newY);
+                if (cell.isOccupied()) {
+                    const agent = cell.getAgent();
+                    if (agent) {
+                        surroundingAgents.push(agent);
+                    }
+                }
+            }
+        }
+        
+        return surroundingAgents;
     }
 }
