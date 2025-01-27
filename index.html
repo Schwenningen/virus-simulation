@@ -24,7 +24,8 @@
     <!-- Header -->
     <header class="border-b bg-white">
         <div class="px-4 py-4 flex items-center justify-start">
-            <h1 class="text-3xl font-bold ml-12 bg-gradient-to-t from-black to-cyan-500 bg-clip-text text-transparent">
+            <img src="src/images/virus_simulation_icon.png" alt="icon" class="inline-block w-16 h-16">
+            <h1 class="text-3xl font-bold ml-4 bg-gradient-to-t from-black to-cyan-500 bg-clip-text text-transparent">
                 Virus Simulation
             </h1>
         </div>
@@ -35,26 +36,57 @@
         <div class="flex flex-col md:flex-row gap-4">
             <!-- Parameters Panel -->
             <div class="bg-white rounded-lg shadow-sm p-4 md:w-1/8 max-w-full max-w-[calc(10vh)]">
-                <div class="mb-4 flex items-center">
+                <div class="mb-8 flex items-center">
                     <img src="src/images/settings.png" alt="icon" class="inline-block w-8 h-8 mr-2">
-                    <h2 class="text-lg font-semibold">Set Parameters</h2>
+                    <h2 class="text-2xl font-semibold bg-gradient-to-t from-black to-cyan-500 bg-clip-text text-transparent">Set Parameters</h2>
                 </div>
                 <div class="space-y-6">
-                    <!-- Population Size Input -->
+                    <!-- Field Size Input -->
                     <div class="space-y-2 max-w-[calc(25vh)]">
-                        <label class="text-sm font-medium">Population Size</label>
+                        <label class="text-bm font-medium">
+                            <img src="src/images/field_size.png" alt="icon" class="inline-block w-8 h-8 mr-2">
+                            Field Size: <span id="field-width-value" class="text-bm font-medium">10</span> x <span id="field-height-value" class="text-bm font-medium">10</span>
+                        </label>
+                        <div class="flex space-x-2">
+                            <input 
+                                type="number" 
+                                value="10"
+                                min="1"
+                                max="100"
+                                class="w-full h-8 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-cyan-500 p-2 text-bm font-medium"
+                                oninput="document.getElementById('field-width-value').textContent = this.value"
+                            >
+                            <input 
+                                type="number" 
+                                value="10"
+                                min="1"
+                                max="100"
+                                class="w-full h-8 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-cyan-500 p-2 text-bm font-medium"
+                                oninput="document.getElementById('field-height-value').textContent = this.value"
+                            >
+                        </div>
+                    </div>
+                    <!-- Population size Slider -->
+                    <div class="space-y-2 max-w-[calc(25vh)]">
+                        <label class="text-bm font-medium">
+                            <img src="src/images/population.png" alt="icon" class="inline-block w-8 h-8 mr-2">
+                            Population Size: <span id="population-size-value" class="text-bm font-medium">50</span>
+                        </label>
                         <input 
-                            type="number" 
-                            value="10"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                            type="range" 
+                            value="50"
+                            min="0"
+                            max="100"
+                            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-cyan-500"
+                            oninput="document.getElementById('population-size-value').textContent = this.value"
                         >
                     </div>
                     
                     <!-- Infection chance Slider -->
                     <div class="space-y-2 max-w-[calc(25vh)]">
-                        <label class="text-sm font-medium">
+                        <label class="text-bm font-medium">
                             <img src="src/images/infection_chance.png" alt="icon" class="inline-block w-8 h-8 mr-2">
-                            Infection chance: <span id="infection-chance-value" class="text-sm font-medium">50%</span>
+                            Infection chance: <span id="infection-chance-value" class="text-bm font-medium">50%</span>
                         </label>
                         <input 
                             type="range" 
@@ -67,9 +99,9 @@
                     </div>
                     <!-- Recovery chance slider -->
                     <div class="space-y-2 max-w-[calc(25vh)]">
-                        <label class="text-sm font-medium">
+                        <label class="text-bm font-medium">
                             <img src="src/images/recovery_chance.png" alt="icon" class="inline-block w-8 h-8 mr-2">
-                            Recovery сhance: <span id="recovery-chance-value" class="text-sm font-medium">50%</span>
+                            Recovery сhance: <span id="recovery-chance-value" class="text-bm font-medium">50%</span>
                         </label>
                         <input 
                             type="range" 
@@ -82,9 +114,9 @@
                     </div>
                     <!-- Incubation time slider -->
                     <div class="space-y-2 max-w-[calc(25vh)]">
-                        <label class="text-sm font-medium">
+                        <label class="text-bm font-medium">
                             <img src="src/images/incubation_period.png" alt="icon" class="inline-block w-8 h-8 mr-2">
-                            Incubation period: <span id="incubation-period-value" class="text-sm font-medium">5</span> days
+                            Incubation period: <span id="incubation-period-value" class="text-bm font-medium">5</span> days
                         </label>
                         <input 
                             type="range" 
@@ -97,9 +129,9 @@
                     </div>
                     <!-- Infection duration slider -->
                     <div class="space-y-2 max-w-[calc(25vh)]">
-                        <label class="text-sm font-medium">
+                        <label class="text-bm font-medium">
                             <img src="src/images/infection_period.png" alt="icon" class="inline-block w-8 h-8 mr-2">
-                            Infection period: <span id="infection-period-value" class="text-sm font-medium">10</span> days
+                            Infection period: <span id="infection-period-value" class="text-bm font-medium">10</span> days
                         </label>
                         <input 
                             type="range" 
@@ -110,7 +142,6 @@
                             oninput="document.getElementById('infection-period-value').textContent = this.value"
                         >
                     </div>
-
                     <!-- Start Button -->
                     <button 
                         class="w-full py-2 px-4 bg-cyan-500 hover:bg-cyan-600 text-white rounded-md transition-colors"
