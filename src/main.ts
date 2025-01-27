@@ -5,7 +5,7 @@ let simulationManager: SimulationManager = new SimulationManager();
 export function createSimulation() {
     if (simulationManager.getSimulation() !== null) {
         simulationManager.stopSimulation();
-        simulationManager.getSimulation()!.clearCanvas();
+        simulationManager.getSimulation()!.getUiRendering()!.clearCanvas();
         const canvasElement = document.querySelector('canvas');
         if (canvasElement) {
             canvasElement.remove();

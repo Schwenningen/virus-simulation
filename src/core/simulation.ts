@@ -64,4 +64,8 @@ export class Simulation {
     getStatistics() {
         return this.statistics;
     }
+
+    getUiRendering() {
+        return this.uiRendering;
+    }
 }
