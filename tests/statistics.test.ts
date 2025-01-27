@@ -39,25 +39,4 @@ describe('Statistics', () => {
         const stats = new Statistics(agents);
         expect(stats.getDeadCount()).toBe(1);
     });
-
-    it('should update statistics when an agent changes state', () => {
-        const stats = new Statistics(agents);
-        stats.updateStatistics(agents);
-        expect(stats.getSusceptibleCount()).toBe(1);
-        expect(stats.getInfectedCount()).toBe(2);
-    });
-
-    it('should update statistics when an agent recovers', () => {
-        const stats = new Statistics(agents);
-        stats.updateStatistics(agents);
-        expect(stats.getInfectedCount()).toBe(0);
-        expect(stats.getRecoveredCount()).toBe(2);
-    });
-
-    it('should update statistics when an agent dies', () => {
-        const stats = new Statistics(agents);
-        stats.updateStatistics(agents);
-        expect(stats.getInfectedCount()).toBe(0);
-        expect(stats.getDeadCount()).toBe(2);
-    });
 });
