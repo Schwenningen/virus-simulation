@@ -6,11 +6,11 @@ export class Canvas {
     private gridHeight: number;
     private padding: number;
 
-    constructor(gridWidth: number, gridHeight: number, cellSize: number) {
+    constructor(gridWidth: number, gridHeight: number) {
         this.gridWidth = gridWidth;
         this.gridHeight = gridHeight;
-        this.cellSize = cellSize;
-        this.padding = cellSize / 2;
+        this.cellSize = 4800 / gridWidth;
+        this.padding = this.cellSize / 2;
 
         this.canvas = document.createElement("canvas");
         this.canvas.width = this.gridWidth * this.cellSize + this.padding * 2;
