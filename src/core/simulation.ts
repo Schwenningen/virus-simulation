@@ -37,6 +37,7 @@ export class Simulation {
             this.agentStates.set(agent, { prevX: x, prevY: y, targetX: x, targetY: y, lerpProgress: 1, moveStep: 1 / fps });
         });
         this.statistics = new Statistics(this.agents);
+        this.updateStatistics();
     }
 
     public update() {
@@ -46,9 +47,9 @@ export class Simulation {
             state.prevX = state.targetX;
             state.prevY = state.targetY;
 
-            const agentState = agent.getState();
             agent.updateState();
-            this.statistics.updateStatistics([agentState, agent.getState()]);
+            this.statistics.updateStatistics(this.agents);
+            this.updateStatistics();
 
             const { x, y } = agent.getPosition();
             state.targetX = x;
@@ -87,6 +88,15 @@ export class Simulation {
 
     getIcon(state: 'Susceptible' | 'Infected' | 'Recovered' | 'Dead' | 'Incubating'): string {
         return state === "Susceptible" ? Simulation.icon_susceptible : state === "Infected" ? Simulation.icon_infected : state === "Recovered" ? Simulation.icon_recovered : state === "Incubating" ? Simulation.icon_incubating : Simulation.icon_dead;
+    }
+
+    updateStatistics() {
+        document.getElementById('susceptible-count')!.textContent = this.statistics.getSusceptibleCount().toString();
+        document.getElementById('population-count')!.textContent = this.statistics.getPopulation().toString();
+        document.getElementById('infected-count')!.textContent = this.statistics.getInfectedCount().toString();
+        document.getElementById('recovered-count')!.textContent = this.statistics.getRecoveredCount().toString();
+        document.getElementById('dead-count')!.textContent = this.statistics.getDeadCount().toString();
+        document.getElementById('incubating-count')!.textContent = this.statistics.getIncubatingCount().toString();
     }
 
     public loop = (timestamp: number) => {

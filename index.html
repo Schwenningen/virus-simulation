@@ -23,11 +23,33 @@
 <body class="min-h-screen bg-gray-100 overflow-hidden">
     <!-- Header -->
     <header class="border-b bg-white">
-        <div class="px-4 py-4 flex items-center justify-start">
-            <img src="src/images/virus_simulation_icon.png" alt="icon" class="inline-block w-16 h-16 ml-8 mr-4">
-            <h1 class="text-3xl font-bold bg-gradient-to-t from-black to-cyan-500 bg-clip-text text-transparent">
-                Virus Simulation
-            </h1>
+        <div id="header" class="px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center">
+                <img src="src/images/virus_simulation_icon.png" alt="icon" class="inline-block w-16 h-16 ml-8 mr-4">
+                <h1 class="text-3xl font-bold bg-gradient-to-t from-black to-cyan-500 bg-clip-text text-transparent">
+                    Virus Simulation
+                </h1>
+            </div>
+            <div id="statistics" class="flex space-x-4 mr-8">
+                <div class="text-lg font-medium">
+                    <span>Susceptible: </span><span id="susceptible-count">0</span>
+                </div>
+                <div class="text-lg font-medium">
+                    <span>Population: </span><span id="population-count">0</span>
+                </div>
+                <div class="text-lg font-medium">
+                    <span>Incubating: </span><span id="incubating-count">0</span>
+                </div>
+                <div class="text-lg font-medium">
+                    <span>Infected: </span><span id="infected-count">0</span>
+                </div>
+                <div class="text-lg font-medium">
+                    <span>Recovered: </span><span id="recovered-count">0</span>
+                </div>
+                <div class="text-lg font-medium">
+                    <span>Dead: </span><span id="dead-count">0</span>
+                </div>
+            </div>
         </div>
     </header>
 
