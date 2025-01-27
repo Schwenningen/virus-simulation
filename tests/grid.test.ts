@@ -137,4 +137,59 @@ describe('Grid', () => {
         expect(surroundingAgents.length).toBe(1);
         expect(surroundingAgents).toEqual(expect.arrayContaining([agent]));
     });
+
+    it('should return all available cells in the grid', () => {
+        const grid = new Grid(3, 3);
+        grid.getCell(0, 0).setAgent(Agent.create(0, 0, grid, grid.getCell(0, 0)));
+        grid.getCell(1, 1).setAgent(Agent.create(1, 1, grid, grid.getCell(1, 1)));
+
+        const availableCells = grid.getAllAvailableCells();
+
+        expect(availableCells.length).toBe(7);
+        expect(availableCells).toEqual(
+            expect.arrayContaining([
+                grid.getCell(0, 1),
+                grid.getCell(0, 2),
+                grid.getCell(1, 0),
+                grid.getCell(1, 2),
+                grid.getCell(2, 0),
+                grid.getCell(2, 1),
+                grid.getCell(2, 2)
+            ])
+        );
+    });
+
+    it('should return no available cells if all cells are occupied', () => {
+        const grid = new Grid(3, 3);
+        for (let y = 0; y < 3; y++) {
+            for (let x = 0; x < 3; x++) {
+                grid.getCell(x, y).setAgent(Agent.create(x, y, grid, grid.getCell(x, y)));
+            }
+        }
+
+        const availableCells = grid.getAllAvailableCells();
+
+        expect(availableCells.length).toBe(0);
+    });
+
+    it('should return all cells if none are occupied', () => {
+        const grid = new Grid(3, 3);
+
+        const availableCells = grid.getAllAvailableCells();
+
+        expect(availableCells.length).toBe(9);
+        expect(availableCells).toEqual(
+            expect.arrayContaining([
+                grid.getCell(0, 0),
+                grid.getCell(0, 1),
+                grid.getCell(0, 2),
+                grid.getCell(1, 0),
+                grid.getCell(1, 1),
+                grid.getCell(1, 2),
+                grid.getCell(2, 0),
+                grid.getCell(2, 1),
+                grid.getCell(2, 2)
+            ])
+        );
+    });
 });
