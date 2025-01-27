@@ -1,4 +1,3 @@
-
 # Web Application for Virus Spread Simulation
 
 ## Introduction
@@ -48,7 +47,7 @@ This web application simulates the spread of a virus in a population using agent
    ```
 4. Open the application in your browser:
    ```
-   http://localhost:3000
+   http://localhost:5174
    ```
 
 ## Usage
@@ -147,24 +146,5 @@ The simulation concludes when all agents have recovered or succumbed to the infe
 │── .gitignore             # Ignored files for Git
 │── index.html             # Main HTML file
 ```
-
-## Contributing
-1. Fork the repository.
-2. Create a feature branch:
-   ```bash
-   git checkout -b feature-name
-   ```
-3. Commit your changes:
-   ```bash
-   git commit -m "Add feature-name"
-   ```
-4. Push to the branch:
-   ```bash
-   git push origin feature-name
-   ```
-5. Submit a pull request.
-
-## License
-This project is licensed under the [MIT License](LICENSE).
 
 ---
