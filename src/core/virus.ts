@@ -2,21 +2,20 @@ export class Virus {
     infectionChance: number;
     recoveryChance: number;
     deathChance: number;
-    incubationTime: number;
-    infectionDuration: number;
+    incubationPeriodDuration: number;
+    infectionPeriodDuration: number;
 
     constructor(
         infectionChance: number,
         recoveryChance: number,
-        deathChance: number,
-        incubationTime: number,
-        infectionDuration: number
+        incubationPeriodDuration: number,
+        infectionPeriodDuration: number
     ) {
         this.infectionChance = infectionChance;
         this.recoveryChance = recoveryChance;
-        this.deathChance = deathChance;
-        this.incubationTime = incubationTime;
-        this.infectionDuration = infectionDuration;
+        this.deathChance = 1 - recoveryChance;
+        this.incubationPeriodDuration = incubationPeriodDuration;
+        this.infectionPeriodDuration = infectionPeriodDuration;
     }
 
     getInfectionChance(): number {
@@ -31,11 +30,11 @@ export class Virus {
         return this.deathChance;
     }
 
-    getIncubationTime(): number {
-        return this.incubationTime;
+    getIncubationPeriodDuration(): number {
+        return this.incubationPeriodDuration;
     }
 
-    getInfectionDuration(): number {
-        return this.infectionDuration;
+    getInfectionPeriodDuration(): number {
+        return this.infectionPeriodDuration;
     }
 }
