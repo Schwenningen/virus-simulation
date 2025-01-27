@@ -2,6 +2,7 @@ import { Agent } from "./agent";
 import { Virus } from "./virus";
 import { Canvas } from "../ui/canvas";
 import { AnimationState } from "./animationState";
+import { Statistics } from "./statistics";
 
 export class Simulation {
     agents: Agent[];
@@ -15,6 +16,7 @@ export class Simulation {
     updateInterval: number = 1000;
     fps: number = 30;
     agentStates: Map<Agent, AnimationState>;
+    statistics: Statistics;
     static icon_susceptible: string = "😁";
     static icon_infected: string = "🤢";
     static icon_recovered: string = "😎";
@@ -34,6 +36,7 @@ export class Simulation {
             const { x, y } = agent.getPosition();
             this.agentStates.set(agent, { prevX: x, prevY: y, targetX: x, targetY: y, lerpProgress: 1, moveStep: 1 / fps });
         });
+        this.statistics = new Statistics(this.agents);
     }
 
     public update() {
@@ -43,7 +46,9 @@ export class Simulation {
             state.prevX = state.targetX;
             state.prevY = state.targetY;
 
+            const agentState = agent.getState();
             agent.updateState();
+            this.statistics.updateStatistics([agentState, agent.getState()]);
 
             const { x, y } = agent.getPosition();
             state.targetX = x;
@@ -114,5 +119,9 @@ export class Simulation {
 
     getRunning() {
         return this.running;
+    }
+
+    getStatistics() {
+        return this.statistics;
     }
 }
