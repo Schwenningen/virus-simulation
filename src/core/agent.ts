@@ -1,45 +1,39 @@
 import { Cell } from "./cell";
 import { Grid } from "./grid";
+import { Virus } from "./virus";
 
 export class Agent {
     id: number;
     position: { x: number; y: number };
-    state: 'Susceptible' | 'Infected' | 'Recovered' | 'Dead';
-    readonly infectionChance: number;
-    readonly recoveryChance: number;
-    readonly deathChance: number;
-    readonly incubationTime: number;
-    readonly infectionDuration: number;
+    state: 'Susceptible' | 'Infected' | 'Recovered' | 'Dead' | 'Incubating';
+    incubationPeriod: number;
+    infectionPeriod: number;
     immune: boolean;
-    timeInfected: number = 0;
-    grid: Grid;
+    readonly grid: Grid;
     cell: Cell;
+    virus: Virus | null = null;
 
     constructor(
         id: number,
         x: number,
         y: number,
-        infectionChance: number,
-        recoveryChance: number,
-        deathChance: number,
-        incubationTime: number,
-        infectionDuration: number,
+        state: 'Susceptible' | 'Infected' | 'Recovered' | 'Dead' | 'Incubating' = 'Susceptible',
+        incubationPeriod: number = 0,
+        infectionPeriod: number = 0,
+        immune: boolean = false,
         grid: Grid,
         cell: Cell,
-        state: 'Susceptible' | 'Infected' | 'Recovered' | 'Dead' = 'Susceptible',
-        immune: boolean = false
+        virus: Virus | null = null
     ) {
         this.id = id;
         this.position = {x, y};
         this.state = state;
-        this.infectionChance = infectionChance;
-        this.recoveryChance = recoveryChance;
-        this.deathChance = deathChance;
-        this.incubationTime = incubationTime;
-        this.infectionDuration = infectionDuration;
+        this.incubationPeriod = incubationPeriod;
+        this.infectionPeriod = infectionPeriod;
         this.immune = immune;
         this.grid = grid;
         this.cell = cell;
+        this.virus = virus;
     }
 
     public move() {
@@ -53,34 +47,85 @@ export class Agent {
         }
     }
 
-    public toGetInfected() {
-        if (this.state === 'Susceptible' && !this.immune && Math.random() < this.infectionChance) {
-            this.state = 'Infected';
-            this.timeInfected = 0;
+    public toGetInfected(virus: Virus) {
+        if (this.virus) {
+            if (this.state === 'Susceptible' && !this.immune && Math.random() < virus.getInfectionChance()) {
+                this.state = 'Incubating';
+                this.incubationPeriod = 0;
+                this.infectionPeriod = 0;
+                this.virus = virus;
+            }
         }
     }
 
     public toRecover() {
         if (this.state === 'Infected') {
             this.state = 'Recovered';
+            this.incubationPeriod = 0;
+            this.infectionPeriod = 0;
+            this.virus = null;
             this.immune = true;
         }
     }
 
-    public infect() {
+    public toDie() {
+        if (this.state === 'Infected') {
+            this.state = 'Dead';
+            this.incubationPeriod = 0;
+            this.infectionPeriod = 0;
+            this.virus = null;
+        }
+    }
+
+    public infect(virus: Virus) {
         const agentsToInfect = this.grid.getSurroundingAgents(this.position.x, this.position.y);
         agentsToInfect.forEach(agent => {
             if (agent.state === 'Susceptible' && !agent.immune) {
-                agent.toGetInfected();
+                agent.toGetInfected(virus);
             }
         });
     }
+    
+    public updateState() {
+        this.move();
 
-    public getState(): 'Susceptible' | 'Infected' | 'Recovered' | 'Dead' {
+        if (this.isIncubating()) {
+            this.incubationPeriod++;
+            if (this.virus) {
+                if (this.incubationPeriod >= this.virus.getIncubationPeriodDuration()) {
+                    this.setState('Infected');
+                    this.infectionPeriod = 0;
+                    this.incubationPeriod = 0;
+                }
+            }
+        }
+        
+        if (this.isInfected()) {
+            if (this.virus) {
+                this.infect(this.virus);
+                this.infectionPeriod++;
+                if (this.infectionPeriod >= this.virus.getInfectionPeriodDuration()) {
+                    if (Math.random() < this.virus.getRecoveryChance()) {
+                        this.toRecover();
+                    } else {
+                        this.toDie();
+                    }
+                }
+            }
+        }
+        if (this.state === 'Infected') {
+            this.timeInfected++;
+            if (this.timeInfected >= this.infectionDuration) {
+                this.toRecover();
+            }
+        }
+    }
+
+    public getState(): 'Susceptible' | 'Infected' | 'Recovered' | 'Dead' | 'Incubating' {
         return this.state;
     }
 
-    public setState(state: 'Susceptible' | 'Infected' | 'Recovered' | 'Dead'): void {
+    public setState(state: 'Susceptible' | 'Infected' | 'Recovered' | 'Dead' | 'Incubating'): void {
         this.state = state;
     }
 
@@ -92,28 +137,20 @@ export class Agent {
         this.position = position;
     }
 
-    public getInfectionChance(): number {
-        return this.infectionChance;
+    public getInfectionPeriod(): number {
+        return this.infectionPeriod;
     }
 
-    public getRecoveryChance(): number {
-        return this.recoveryChance;
+    public setInfectionPeriod(infectionPeriod: number): void {
+        this.infectionPeriod = infectionPeriod;
     }
 
-    public getDeathChance(): number {
-        return this.deathChance;
+    public getIncubationPeriod(): number {
+        return this.incubationPeriod;
     }
 
-    public getIncubationTime(): number {
-        return this.incubationTime;
-    }
-
-    public getInfectionDuration(): number {
-        return this.infectionDuration;
-    }
-
-    public getTimeInfected(): number {
-        return this.timeInfected;
+    public setIncubationPeriod(incubationPeriod: number): void {
+        this.incubationPeriod = incubationPeriod;
     }
 
     public getGrid(): Grid {
@@ -124,8 +161,28 @@ export class Agent {
         return this.immune;
     }   
 
+    public getVirus(): Virus | null {
+        return this.virus;
+    }
+
+    public setVirus(virus: Virus | null): void {
+        this.virus = virus;
+    }
+
+    public getCell(): Cell {
+        return this.cell;
+    }
+
+    public setCell(cell: Cell): void {
+        this.cell = cell;
+    }   
+
     public setImmune(immune: boolean): void {
         this.immune = immune;
+    }
+
+    public isSusceptible(): boolean {
+        return this.state === 'Susceptible';
     }
 
     public isInfected(): boolean {
@@ -134,6 +191,10 @@ export class Agent {
 
     public isRecovered(): boolean {
         return this.state === 'Recovered';
+    }
+
+    public isIncubating(): boolean {
+        return this.state === 'Incubating';
     }
 
     public isDead(): boolean {
