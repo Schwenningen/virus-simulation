@@ -49,27 +49,64 @@
                         >
                     </div>
                     
-                    <!-- Infection Rate Slider -->
+                    <!-- Infection chance Slider -->
                     <div class="space-y-2">
-                        <label class="text-sm font-medium">Infection Rate (%)</label>
+                        <label class="text-sm font-medium">
+                            <img src="src/images/infection_chance.png" alt="icon" class="inline-block w-8 h-8 mr-2">
+                            Infection chance: <span id="infection-chance-value" class="text-sm font-medium">50%</span>
+                        </label>
                         <input 
                             type="range" 
                             value="50"
                             min="0"
                             max="100"
                             class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-cyan-500"
+                            oninput="document.getElementById('infection-chance-value').textContent = this.value + '%'"
                         >
                     </div>
-
-                    <!-- Recovery Rate Slider -->
+                    <!-- Recovery chance slider -->
                     <div class="space-y-2">
-                        <label class="text-sm font-medium">Recovery Rate (%)</label>
+                        <label class="text-sm font-medium">
+                            <img src="src/images/recovery_chance.png" alt="icon" class="inline-block w-8 h-8 mr-2">
+                            Recovery сhance: <span id="recovery-chance-value" class="text-sm font-medium">50%</span>
+                        </label>
                         <input 
                             type="range" 
                             value="50"
                             min="0"
                             max="100"
                             class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-cyan-500"
+                            oninput="document.getElementById('recovery-chance-value').textContent = this.value + '%'"
+                        >
+                    </div>
+                    <!-- Incubation time slider -->
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium">
+                            <img src="src/images/incubation_time.png" alt="icon" class="inline-block w-8 h-8 mr-2">
+                            Incubation time: <span id="incubation-time-value" class="text-sm font-medium">5</span> days
+                        </label>
+                        <input 
+                            type="range" 
+                            value="10"
+                            min="1"
+                            max="30"
+                            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-cyan-500"
+                            oninput="document.getElementById('incubation-time-value').textContent = this.value"
+                        >
+                    </div>
+                    <!-- Infection duration slider -->
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium">
+                            <img src="src/images/infection_duration.png" alt="icon" class="inline-block w-8 h-8 mr-2">
+                            Infection duration: <span id="infection-duration-value" class="text-sm font-medium">10</span> days
+                        </label>
+                        <input 
+                            type="range" 
+                            value="10"
+                            min="1"
+                            max="30"
+                            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-cyan-500"
+                            oninput="document.getElementById('infection-duration-value').textContent = this.value"
                         >
                     </div>
 
@@ -84,9 +121,7 @@
 
             <!-- Simulation Field -->
             <div class="bg-white rounded-lg shadow-sm p-4 md:w-7/8 h-[calc(100vh-8rem)] flex flex-col">
-                <div class="mb-6">
-                    <h2 class="text-lg font-semibold">Simulation Field</h2>
-                </div>
+                <h2 class="text-lg font-semibold">Simulation Field</h2>
                 <div id="grid-container" class="w-full h-full overflow-auto"></div>
             </div>
         </div>
