@@ -84,4 +84,19 @@ export class Grid {
         
         return surroundingAgents;
     }
+
+    public getAllAvailableCells(): Cell[] {
+        const availableCells: Cell[] = [];
+
+        for (let y = 0; y < this.height; y++) {
+            for (let x = 0; x < this.width; x++) {
+                const cell = this.getCell(x, y);
+                if (!cell.isOccupied()) {
+                    availableCells.push(cell);
+                }
+            }
+        }
+
+        return availableCells;
+    }
 }
