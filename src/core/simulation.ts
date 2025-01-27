@@ -10,11 +10,11 @@ export class Simulation {
     running: boolean = false;
     lastUpdateTime: number = 0;
     updateInterval: number = 500;
-    icon_susceptible: string = "😁";
-    icon_infected: string = "🤢";
-    icon_recovered: string = "😎";
-    icon_dead: string = "💀";
-    icon_incubating: string = "😷";
+    static icon_susceptible: string = "😁";
+    static icon_infected: string = "🤢";
+    static icon_recovered: string = "😎";
+    static icon_dead: string = "💀";
+    static icon_incubating: string = "😷";
 
     constructor(agents: Agent[], virus: Virus, canvas: Canvas, updateInterval: number = 1000) {
         this.agents = agents;
@@ -35,32 +35,22 @@ export class Simulation {
         this.canvas.drawGrid();
         const size = this.canvas.getCellSize();
         const padding = this.canvas.getPadding();
-        /*
+
         this.agents.forEach(agent => {
             const { x, y } = agent.getPosition();
-            this.ctx.fillStyle = this.getColor(agent.getState());
-            this.ctx.fillRect(
-                Math.round(x * size) + padding,
-                Math.round(y * size) + padding,
-                size, size
-            );
-        });
-        */
-        this.agents.forEach(agent => {
-            const { x, y } = agent.getPosition();
-            this.ctx.font = `${size / 1.5}px Arial`;
+            this.ctx.font = `${size / 1.2}px Arial`;
             this.ctx.textAlign = "center";
             this.ctx.textBaseline = "middle";
             this.ctx.fillText(
                 this.getIcon(agent.getState()), 
                 Math.round(x * size) + padding + size / 2, 
-                Math.round(y * size) + padding + size / 2
+                Math.round(y * size) + padding + size / 2 + size / 16
             );
         });
     }
 
     getIcon(state: 'Susceptible' | 'Infected' | 'Recovered' | 'Dead' | 'Incubating'): string {
-        return state === "Susceptible" ? this.icon_susceptible : state === "Infected" ? this.icon_infected : state === "Recovered" ? this.icon_recovered : state === "Incubating" ? this.icon_incubating : this.icon_dead;
+        return state === "Susceptible" ? Simulation.icon_susceptible : state === "Infected" ? Simulation.icon_infected : state === "Recovered" ? Simulation.icon_recovered : state === "Incubating" ? Simulation.icon_incubating : Simulation.icon_dead;
     }
 
     public loop = (timestamp: number) => {
