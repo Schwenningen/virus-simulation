@@ -82,8 +82,8 @@
                     <!-- Incubation time slider -->
                     <div class="space-y-2 max-w-[calc(25vh)]">
                         <label class="text-sm font-medium">
-                            <img src="src/images/incubation_time.png" alt="icon" class="inline-block w-8 h-8 mr-2">
-                            Incubation time: <span id="incubation-time-value" class="text-sm font-medium">5</span> days
+                            <img src="src/images/incubation_period.png" alt="icon" class="inline-block w-8 h-8 mr-2">
+                            Incubation period: <span id="incubation-period-value" class="text-sm font-medium">5</span> days
                         </label>
                         <input 
                             type="range" 
@@ -91,14 +91,14 @@
                             min="1"
                             max="30"
                             class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-cyan-500"
-                            oninput="document.getElementById('incubation-time-value').textContent = this.value"
+                            oninput="document.getElementById('incubation-period-value').textContent = this.value"
                         >
                     </div>
                     <!-- Infection duration slider -->
                     <div class="space-y-2 max-w-[calc(25vh)]">
                         <label class="text-sm font-medium">
-                            <img src="src/images/infection_duration.png" alt="icon" class="inline-block w-8 h-8 mr-2">
-                            Infection duration: <span id="infection-duration-value" class="text-sm font-medium">10</span> days
+                            <img src="src/images/infection_period.png" alt="icon" class="inline-block w-8 h-8 mr-2">
+                            Infection period: <span id="infection-period-value" class="text-sm font-medium">10</span> days
                         </label>
                         <input 
                             type="range" 
@@ -106,7 +106,7 @@
                             min="1"
                             max="30"
                             class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-cyan-500"
-                            oninput="document.getElementById('infection-duration-value').textContent = this.value"
+                            oninput="document.getElementById('infection-period-value').textContent = this.value"
                         >
                     </div>
 
