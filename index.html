@@ -34,13 +34,13 @@
     <main class="w-full px-4 py-4">
         <div class="flex flex-col md:flex-row gap-4">
             <!-- Parameters Panel -->
-            <div class="bg-white rounded-lg shadow-sm p-4 md:w-1/8">
+            <div class="bg-white rounded-lg shadow-sm p-4 md:w-1/8 max-w-full max-w-[calc(10vh)]">
                 <div class="mb-4">
                     <h2 class="text-lg font-semibold">Set Parameters</h2>
                 </div>
                 <div class="space-y-6">
                     <!-- Population Size Input -->
-                    <div class="space-y-2">
+                    <div class="space-y-2 max-w-[calc(25vh)]">
                         <label class="text-sm font-medium">Population Size</label>
                         <input 
                             type="number" 
@@ -50,7 +50,7 @@
                     </div>
                     
                     <!-- Infection chance Slider -->
-                    <div class="space-y-2">
+                    <div class="space-y-2 max-w-[calc(25vh)]">
                         <label class="text-sm font-medium">
                             <img src="src/images/infection_chance.png" alt="icon" class="inline-block w-8 h-8 mr-2">
                             Infection chance: <span id="infection-chance-value" class="text-sm font-medium">50%</span>
@@ -65,7 +65,7 @@
                         >
                     </div>
                     <!-- Recovery chance slider -->
-                    <div class="space-y-2">
+                    <div class="space-y-2 max-w-[calc(25vh)]">
                         <label class="text-sm font-medium">
                             <img src="src/images/recovery_chance.png" alt="icon" class="inline-block w-8 h-8 mr-2">
                             Recovery сhance: <span id="recovery-chance-value" class="text-sm font-medium">50%</span>
@@ -80,7 +80,7 @@
                         >
                     </div>
                     <!-- Incubation time slider -->
-                    <div class="space-y-2">
+                    <div class="space-y-2 max-w-[calc(25vh)]">
                         <label class="text-sm font-medium">
                             <img src="src/images/incubation_time.png" alt="icon" class="inline-block w-8 h-8 mr-2">
                             Incubation time: <span id="incubation-time-value" class="text-sm font-medium">5</span> days
@@ -95,7 +95,7 @@
                         >
                     </div>
                     <!-- Infection duration slider -->
-                    <div class="space-y-2">
+                    <div class="space-y-2 max-w-[calc(25vh)]">
                         <label class="text-sm font-medium">
                             <img src="src/images/infection_duration.png" alt="icon" class="inline-block w-8 h-8 mr-2">
                             Infection duration: <span id="infection-duration-value" class="text-sm font-medium">10</span> days
