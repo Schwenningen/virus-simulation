@@ -9,6 +9,7 @@ export class Simulation {
     canvas: Canvas;
     ctx: CanvasRenderingContext2D;
     running: boolean = false;
+    end: boolean = false;
     lastUpdateTime: number = 0;
     lastUpdateFrameTime: number = 0;
     updateInterval: number = 500;
@@ -51,8 +52,12 @@ export class Simulation {
         });
     }
 
-    public draw() {
+    public clearCanvas() {
         this.ctx.clearRect(0, 0, this.canvas.getCanvas().width, this.canvas.getCanvas().height);
+    }
+
+    public draw() {
+        this.clearCanvas();
         this.canvas.drawGrid();
         const size = this.canvas.getCellSize();
         const padding = this.canvas.getPadding();
@@ -90,17 +95,24 @@ export class Simulation {
             this.draw();
         }
         if (!this.agents.some(agent => agent.getState() === 'Infected' || agent.getState() === 'Incubating')) {
+            this.end = true;
+            this.draw();
             this.stop();
         }
         requestAnimationFrame(this.loop);
     };
 
     public start() {
+        if (this.end) return;
         this.running = true;
         requestAnimationFrame(this.loop);
     }
 
     public stop() {
         this.running = false;
+    }
+
+    getRunning() {
+        return this.running;
     }
 }

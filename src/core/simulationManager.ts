@@ -23,7 +23,7 @@ export class SimulationManager {
     }
 
     public static initCanvas(fieldWidth: number, fieldHeight: number) {
-        const canvas = new Canvas(fieldWidth, fieldHeight, 4);
+        const canvas = new Canvas(fieldWidth, fieldHeight);
         if (!canvas) {
             console.error("Canvas not created");
         }
