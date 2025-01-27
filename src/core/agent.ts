@@ -3,6 +3,7 @@ import { Grid } from "./grid";
 import { Virus } from "./virus";
 
 export class Agent {
+    private static nextId: number = 0;
     id: number;
     position: { x: number; y: number };
     state: 'Susceptible' | 'Infected' | 'Recovered' | 'Dead' | 'Incubating' = 'Susceptible';
@@ -14,7 +15,6 @@ export class Agent {
     virus: Virus | null = null;
 
     constructor(
-        id: number,
         x: number,
         y: number,
         state: 'Susceptible' | 'Infected' | 'Recovered' | 'Dead' | 'Incubating' = 'Susceptible',
@@ -25,7 +25,7 @@ export class Agent {
         cell: Cell,
         virus: Virus | null = null
     ) {
-        this.id = id;
+        this.id = Agent.nextId++;
         this.position = {x, y};
         this.state = state;
         this.incubationPeriod = incubationPeriod;
@@ -34,6 +34,13 @@ export class Agent {
         this.grid = grid;
         this.cell = cell;
         this.virus = virus;
+        cell.setAgent(this);
+    }
+
+    static create(x: number, y: number, grid: Grid, cell: Cell): Agent {
+        const agent = new Agent(x, y, 'Susceptible', 0, 0, false, grid, cell, null);
+        cell.setAgent(agent);
+        return agent;
     }
 
     public move() {
