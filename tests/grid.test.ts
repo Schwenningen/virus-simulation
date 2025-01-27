@@ -94,4 +94,47 @@ describe('Grid', () => {
             ])
         );
     });
+
+    it('should return all surrounding agents around a given cell', () => {
+        const grid = new Grid(3, 3);
+        const agent1 = new Agent(1, 1, 1, 1, 1, 1, 1, 1, 1, grid, grid.getCell(0, 0));
+        const agent2 = new Agent(1, 1, 1, 1, 1, 1, 1, 1, 1, grid, grid.getCell(0, 1));
+        grid.getCell(0, 0).setAgent(agent1);
+        grid.getCell(0, 1).setAgent(agent2);
+
+        const surroundingAgents = grid.getSurroundingAgents(1, 1);
+
+        expect(surroundingAgents.length).toBe(2);
+        expect(surroundingAgents).toEqual(expect.arrayContaining([agent1, agent2]));
+    });
+
+    it('should return no agents if all surrounding cells are empty', () => {
+        const grid = new Grid(3, 3);
+
+        const surroundingAgents = grid.getSurroundingAgents(1, 1);
+
+        expect(surroundingAgents.length).toBe(0);
+    });
+
+    it('should return agents when one surrounding cell is occupied', () => {
+        const grid = new Grid(3, 3);
+        const agent = new Agent(1, 1, 1, 1, 1, 1, 1, 1, 1, grid, grid.getCell(0, 1));
+        grid.getCell(0, 1).setAgent(agent);
+
+        const surroundingAgents = grid.getSurroundingAgents(1, 1);
+
+        expect(surroundingAgents.length).toBe(1);
+        expect(surroundingAgents).toEqual(expect.arrayContaining([agent]));
+    });
+
+    it('should return agents when the agent is on the edge of the grid', () => {
+        const grid = new Grid(3, 3);
+        const agent = new Agent(1, 1, 1, 1, 1, 1, 1, 1, 1, grid, grid.getCell(0, 1));
+        grid.getCell(0, 1).setAgent(agent);
+
+        const surroundingAgents = grid.getSurroundingAgents(0, 0);
+
+        expect(surroundingAgents.length).toBe(1);
+        expect(surroundingAgents).toEqual(expect.arrayContaining([agent]));
+    });
 });
