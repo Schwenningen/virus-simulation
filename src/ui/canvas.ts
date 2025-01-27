@@ -21,7 +21,7 @@ export class Canvas {
         this.drawGrid();
     }
 
-    private drawGrid(): void {
+    public drawGrid(): void {
         if (!this.ctx) return;
 
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -49,5 +49,33 @@ export class Canvas {
 
     public getCanvas(): HTMLCanvasElement {
         return this.canvas;
+    }
+
+    public getCellSize(): number {
+        return this.cellSize;
+    }
+
+    public getPadding(): number {
+        return this.padding;
+    }
+
+    public getGridWidth(): number {
+        return this.gridWidth;
+    }
+
+    public getGridHeight(): number {
+        return this.gridHeight;
+    }
+
+    public getCanvasWidth(): number {
+        return this.canvas.width;
+    }
+
+    public getCanvasHeight(): number {
+        return this.canvas.height;
+    }
+
+    public getCtx(): CanvasRenderingContext2D {
+        return this.ctx!;
     }
 }
