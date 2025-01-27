@@ -14,12 +14,13 @@ export class SimulationManager {
         const canvas = SimulationManager.initCanvas(inputValues.fieldWidth, inputValues.fieldHeight);
         const grid = new Grid(inputValues.fieldWidth, inputValues.fieldHeight);
         const virus = new Virus(inputValues.infectionChance / 100, inputValues.recoveryChance / 100, inputValues.incubationPeriod, inputValues.infectionPeriod);
+        const speedSimulation = 1000 - inputValues.speedSimulation * 100;
     
         const agents: Agent[] = [];
         agents.push(...SimulationManager.generateAgents(inputValues.susceptiblePopulation, 'Susceptible', 0, 0, false, grid, virus));
         agents.push(...SimulationManager.generateAgents(inputValues.infectedPopulation, 'Infected', 0, 0, false, grid, virus));
-    
-        this.simulation = new Simulation(agents, virus, canvas, 1000);
+
+        this.simulation = new Simulation(agents, virus, canvas, speedSimulation);
     }
 
     public static initCanvas(fieldWidth: number, fieldHeight: number) {
@@ -59,12 +60,14 @@ export class SimulationManager {
     public static getInputValues() {
         const fieldWidth = (document.getElementById('field-width-input') as HTMLInputElement).value;
         const fieldHeight = (document.getElementById('field-height-input') as HTMLInputElement).value;
-        const susceptiblePopulation = (document.getElementById('susceptible-population-value') as HTMLInputElement).textContent ?? '0';
-        const infectedPopulation = (document.getElementById('infected-population-value') as HTMLInputElement).textContent ?? '0';
+        const susceptiblePopulation = (document.getElementById('susceptible-population-value') as HTMLInputElement).value;
+        const infectedPopulation = (document.getElementById('infected-population-value') as HTMLInputElement).value;;
         const infectionChance = (document.getElementById('infection-chance-value') as HTMLInputElement).textContent?.replace('%', '') ?? '0';
         const recoveryChance = (document.getElementById('recovery-chance-value') as HTMLInputElement).textContent?.replace('%', '') ?? '0';
         const incubationPeriod = (document.getElementById('incubation-period-value') as HTMLInputElement).textContent ?? '0';
         const infectionPeriod = (document.getElementById('infection-period-value') as HTMLInputElement).textContent ?? '0';
+        const speedSimulation = (document.getElementById('speed-simulation-value') as HTMLInputElement).textContent ?? '0';
+
     
         return {
             fieldWidth: parseInt(fieldWidth),
@@ -74,7 +77,8 @@ export class SimulationManager {
             infectionChance: parseFloat(infectionChance),
             recoveryChance: parseFloat(recoveryChance),
             incubationPeriod: parseInt(incubationPeriod),
-            infectionPeriod: parseInt(infectionPeriod)
+            infectionPeriod: parseInt(infectionPeriod),
+            speedSimulation: parseInt(speedSimulation)
         };
     }
 

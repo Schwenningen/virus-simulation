@@ -12,7 +12,7 @@ export class Simulation {
     end: boolean = false;
     lastUpdateTime: number = 0;
     lastUpdateFrameTime: number = 0;
-    updateInterval: number = 500;
+    updateInterval: number = 1000;
     fps: number = 30;
     agentStates: Map<Agent, AnimationState>;
     static icon_susceptible: string = "😁";
