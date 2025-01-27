@@ -10,11 +10,17 @@ export class Simulation {
     running: boolean = false;
     lastUpdateTime: number = 0;
     updateInterval: number = 500;
+    icon_susceptible: string = "😁";
+    icon_infected: string = "🤢";
+    icon_recovered: string = "😎";
+    icon_dead: string = "💀";
+    icon_incubating: string = "😷";
 
-    constructor(agents: Agent[], virus: Virus, canvas: Canvas) {
+    constructor(agents: Agent[], virus: Virus, canvas: Canvas, updateInterval: number = 1000) {
         this.agents = agents;
         this.virus = virus;
         this.canvas = canvas;
+        this.updateInterval = updateInterval;
         this.ctx = this.canvas.getCanvas().getContext("2d")!;
     }
 
@@ -27,20 +33,34 @@ export class Simulation {
     public draw() {
         this.ctx.clearRect(0, 0, this.canvas.getCanvas().width, this.canvas.getCanvas().height);
         this.canvas.drawGrid();
-
+        const size = this.canvas.getCellSize();
+        const padding = this.canvas.getPadding();
+        /*
         this.agents.forEach(agent => {
             const { x, y } = agent.getPosition();
             this.ctx.fillStyle = this.getColor(agent.getState());
             this.ctx.fillRect(
-                Math.round(x * this.canvas.getCellSize()) + this.canvas.getPadding(),
-                Math.round(y * this.canvas.getCellSize()) + this.canvas.getPadding(),
-                this.canvas.getCellSize(), this.canvas.getCellSize()
+                Math.round(x * size) + padding,
+                Math.round(y * size) + padding,
+                size, size
+            );
+        });
+        */
+        this.agents.forEach(agent => {
+            const { x, y } = agent.getPosition();
+            this.ctx.font = `${size / 1.5}px Arial`;
+            this.ctx.textAlign = "center";
+            this.ctx.textBaseline = "middle";
+            this.ctx.fillText(
+                this.getIcon(agent.getState()), 
+                Math.round(x * size) + padding + size / 2, 
+                Math.round(y * size) + padding + size / 2
             );
         });
     }
 
-    public getColor(state: 'Susceptible' | 'Infected' | 'Recovered' | 'Dead' | 'Incubating'): string {
-        return state === "Susceptible" ? "blue" : state === "Infected" ? "red" : state === "Recovered" ? "green" : state === "Incubating" ? "yellow" : "gray";
+    getIcon(state: 'Susceptible' | 'Infected' | 'Recovered' | 'Dead' | 'Incubating'): string {
+        return state === "Susceptible" ? this.icon_susceptible : state === "Infected" ? this.icon_infected : state === "Recovered" ? this.icon_recovered : state === "Incubating" ? this.icon_incubating : this.icon_dead;
     }
 
     public loop = (timestamp: number) => {
