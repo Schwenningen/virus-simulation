@@ -11,7 +11,7 @@
                 extend: {
                     colors: {
                         cyan: {
-                            500: '#029db8',
+                            500: '#02c9d4',
                             600: '#0891b2',
                         }
                     }
@@ -20,7 +20,7 @@
         }
     </script>
 </head>
-<body class="min-h-screen bg-gray-100">
+<body class="min-h-screen bg-gray-100 overflow-hidden">
     <!-- Header -->
     <header class="border-b bg-white">
         <div class="px-4 py-4 flex items-center justify-start">
@@ -144,7 +144,9 @@
                     </div>
                     <!-- Start Button -->
                     <button 
-                        class="w-full py-2 px-4 bg-cyan-500 hover:bg-cyan-600 text-white rounded-md transition-colors"
+                        id="start-simulation-button"
+                        class="w-full py-2 px-4 bg-cyan-500 hover:bg-cyan-600 rounded-md transition-colors text-bm font-medium"
+                        onclick="toggleSimulation()"
                     >
                         Start Simulation
                     </button>
@@ -152,12 +154,15 @@
             </div>
 
             <!-- Simulation Field -->
-            <div class="bg-white rounded-lg shadow-sm p-4 md:w-7/8 h-[calc(100vh-8rem)] flex flex-col">
-                <h2 class="text-lg font-semibold">Simulation Field</h2>
+            <div class="bg-white rounded-lg shadow-sm md:w-7/8 h-[calc(100vh-8rem)] flex flex-col">
                 <div id="grid-container" class="w-full h-full overflow-auto"></div>
             </div>
         </div>
     </main>
+    <script type="module">
+        import { toggleSimulation } from './src/main.ts';
+        window.toggleSimulation = toggleSimulation;
+    </script>
     <script type="module" src="src/main.ts"></script>
 </body>
 </html>

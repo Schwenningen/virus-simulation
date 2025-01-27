@@ -25,23 +25,58 @@ function generateAgents(
     return agents;
 }
 
-const canvas = new Canvas(40, 20, 50);
-if (!canvas) {
-    console.error("Canvas not created");
+function getInputValues() {
+    const fieldWidth = (document.getElementById('field-width-input') as HTMLInputElement).value;
+    const fieldHeight = (document.getElementById('field-height-input') as HTMLInputElement).value;
+    const populationSize = (document.getElementById('population-size-value') as HTMLInputElement).textContent ?? '0';
+    const infectionChance = (document.getElementById('infection-chance-value') as HTMLInputElement).textContent?.replace('%', '') ?? '0';
+    const recoveryChance = (document.getElementById('recovery-chance-value') as HTMLInputElement).textContent?.replace('%', '') ?? '0';
+    const incubationPeriod = (document.getElementById('incubation-period-value') as HTMLInputElement).textContent ?? '0';
+    const infectionPeriod = (document.getElementById('infection-period-value') as HTMLInputElement).textContent ?? '0';
+
+    return {
+        fieldWidth: parseInt(fieldWidth),
+        fieldHeight: parseInt(fieldHeight),
+        populationSize: parseInt(populationSize),
+        infectionChance: parseFloat(infectionChance),
+        recoveryChance: parseFloat(recoveryChance),
+        incubationPeriod: parseInt(incubationPeriod),
+        infectionPeriod: parseInt(infectionPeriod)
+    };
 }
 
-const gridContainer = document.getElementById("grid-container")
-if (!gridContainer) {
-    console.error("Grid container not found");
+function initCanvas() {
+    const canvas = new Canvas(40, 20, 50);
+    if (!canvas) {
+        console.error("Canvas not created");
+    }
+    const gridContainer = document.getElementById("grid-container")
+    if (!gridContainer) {
+        console.error("Grid container not found");
+    }
+    gridContainer?.appendChild(canvas.getCanvas())
+    return canvas;
 }
-gridContainer?.appendChild(canvas.getCanvas())
 
-
+//const inputValues = getInputValues();
+const canvas = initCanvas();
 const grid = new Grid(40, 20);
 const virus = new Virus(1, 0.1, 30, 30);
 
 const agents: Agent[] = generateAgents(80, 'Susceptible', 0, 0, false, grid, virus);
 agents.push(...generateAgents(2, 'Infected', 0, 0, false, grid, virus));
 
-const simulation = new Simulation(agents, virus, canvas);
-simulation.start();
+let simulation = new Simulation(agents, virus, canvas);
+let simulationRunning = false;
+
+export function toggleSimulation() {
+    if (simulationRunning) {
+        simulation.stop();
+        simulationRunning = false;
+        document.getElementById('start-simulation-button')!.textContent = 'Start Simulation';
+    } else {
+        simulation.start();
+        simulationRunning = true;
+        document.getElementById('start-simulation-button')!.textContent = 'Stop Simulation';
+    }
+}
