@@ -55,7 +55,7 @@ export class Agent {
     }
 
     public toGetInfected(virus: Virus) {
-        if (this.virus) {
+        if (virus) {
             if (this.state === 'Susceptible' && !this.immune && Math.random() < virus.getInfectionChance()) {
                 this.state = 'Incubating';
                 this.incubationPeriod = 0;
