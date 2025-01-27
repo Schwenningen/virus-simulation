@@ -5,10 +5,10 @@ import { Virus } from "./virus";
 export class Agent {
     id: number;
     position: { x: number; y: number };
-    state: 'Susceptible' | 'Infected' | 'Recovered' | 'Dead' | 'Incubating';
-    incubationPeriod: number;
-    infectionPeriod: number;
-    immune: boolean;
+    state: 'Susceptible' | 'Infected' | 'Recovered' | 'Dead' | 'Incubating' = 'Susceptible';
+    incubationPeriod: number = 0;
+    infectionPeriod: number = 0;
+    immune: boolean = false;
     readonly grid: Grid;
     cell: Cell;
     virus: Virus | null = null;
@@ -87,6 +87,7 @@ export class Agent {
     }
     
     public updateState() {
+        if (this.isDead()) return;
         this.move();
 
         if (this.isIncubating()) {
@@ -111,12 +112,6 @@ export class Agent {
                         this.toDie();
                     }
                 }
-            }
-        }
-        if (this.state === 'Infected') {
-            this.timeInfected++;
-            if (this.timeInfected >= this.infectionDuration) {
-                this.toRecover();
             }
         }
     }
