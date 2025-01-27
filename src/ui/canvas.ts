@@ -1,0 +1,53 @@
+export class Canvas {
+    private canvas: HTMLCanvasElement;
+    private ctx: CanvasRenderingContext2D | null;
+    private cellSize: number;
+    private gridWidth: number;
+    private gridHeight: number;
+    private padding: number;
+
+    constructor(gridWidth: number, gridHeight: number, cellSize: number) {
+        this.gridWidth = gridWidth;
+        this.gridHeight = gridHeight;
+        this.cellSize = cellSize;
+        this.padding = cellSize / 2;
+
+        this.canvas = document.createElement("canvas");
+        this.canvas.width = this.gridWidth * this.cellSize + this.padding * 2;
+        this.canvas.height = this.gridHeight * this.cellSize + this.padding * 2;
+        this.canvas.className = "w-full h-full";
+
+        this.ctx = this.canvas.getContext("2d");
+        this.drawGrid();
+    }
+
+    private drawGrid(): void {
+        if (!this.ctx) return;
+
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.fillStyle = "#ffffff";
+
+        this.ctx.strokeStyle = "#029db8";
+        this.ctx.imageSmoothingEnabled = false;
+
+        for (let x = 0; x <= this.gridWidth; x++) {
+            const xPos = Math.round(x * this.cellSize) + this.padding;
+            this.ctx.beginPath();
+            this.ctx.moveTo(xPos, this.padding);
+            this.ctx.lineTo(xPos, this.canvas.height - this.padding);
+            this.ctx.stroke();
+        }
+
+        for (let y = 0; y <= this.gridHeight; y++) {
+            const yPos = Math.round(y * this.cellSize) + this.padding;
+            this.ctx.beginPath();
+            this.ctx.moveTo(this.padding, yPos);
+            this.ctx.lineTo(this.canvas.width - this.padding, yPos);
+            this.ctx.stroke();
+        }
+    }
+
+    public getCanvas(): HTMLCanvasElement {
+        return this.canvas;
+    }
+}

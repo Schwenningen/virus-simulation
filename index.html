@@ -3,15 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Virus Simulation</title>
-    <style>
-        canvas {
-            border: 1px solid black;
+    <title>VirusSpreadSimulator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cyan: {
+                            500: '#029db8',
+                            600: '#0891b2',
+                        }
+                    }
+                }
+            }
         }
-    </style>
+    </script>
 </head>
-<body>
-    <canvas id="simulationCanvas" width="800" height="600"></canvas>
-    <script type="module" src="/src/main.ts"></script>
+<body class="min-h-screen bg-gray-100">
+    <!-- Header -->
+    <header class="border-b bg-white">
+        <div class="px-4 py-4 flex items-center justify-start">
+            <h1 class="text-3xl font-bold ml-12 bg-gradient-to-t from-black to-cyan-500 bg-clip-text text-transparent">
+                Virus Simulation
+            </h1>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="w-full px-4 py-4">
+        <div class="flex flex-col md:flex-row gap-4">
+            <!-- Parameters Panel -->
+            <div class="bg-white rounded-lg shadow-sm p-4 md:w-1/8">
+                <div class="mb-4">
+                    <h2 class="text-lg font-semibold">Set Parameters</h2>
+                </div>
+                <div class="space-y-6">
+                    <!-- Population Size Input -->
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium">Population Size</label>
+                        <input 
+                            type="number" 
+                            value="10"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                        >
+                    </div>
+                    
+                    <!-- Infection Rate Slider -->
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium">Infection Rate (%)</label>
+                        <input 
+                            type="range" 
+                            value="50"
+                            min="0"
+                            max="100"
+                            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-cyan-500"
+                        >
+                    </div>
+
+                    <!-- Recovery Rate Slider -->
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium">Recovery Rate (%)</label>
+                        <input 
+                            type="range" 
+                            value="50"
+                            min="0"
+                            max="100"
+                            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-cyan-500"
+                        >
+                    </div>
+
+                    <!-- Start Button -->
+                    <button 
+                        class="w-full py-2 px-4 bg-cyan-500 hover:bg-cyan-600 text-white rounded-md transition-colors"
+                    >
+                        Start Simulation
+                    </button>
+                </div>
+            </div>
+
+            <!-- Simulation Field -->
+            <div class="bg-white rounded-lg shadow-sm p-4 md:w-7/8 h-[calc(100vh-8rem)] flex flex-col">
+                <div class="mb-6">
+                    <h2 class="text-lg font-semibold">Simulation Field</h2>
+                </div>
+                <div id="grid-container" class="w-full h-full overflow-auto"></div>
+            </div>
+        </div>
+    </main>
+    <script type="module" src="src/main.ts"></script>
 </body>
 </html>
+
